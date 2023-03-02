@@ -27,14 +27,10 @@ namespace easy_tcp {
         m_serverAddress.sin_family = AF_INET;
         m_serverAddress.sin_addr.s_addr = htonl(INADDR_ANY);
         m_serverAddress.sin_port = htons(port);
-        int bindSuccess = bind(file_descriptor, (struct sockaddr *) &m_serverAddress, sizeof(m_serverAddress));
-        if (bindSuccess == -1) { // bind failed
-            cerr << "Listener: bind failed" << endl;
-            return false;
-        }
+        auto bindSuccess = bind(file_descriptor, (struct sockaddr *) &m_serverAddress, sizeof(m_serverAddress));
         int listenSuccess = listen(file_descriptor, queue_size);
         if (listenSuccess == -1) { // listen failed
-            cerr << "Listener: listening failed" << endl;
+            cerr << "Listener: listening failed (or bind failed silently)" << endl;
             return false;
         }
         return true;
